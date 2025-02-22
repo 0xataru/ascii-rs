@@ -24,8 +24,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let img = image::open(input_file)?;
     let ascii_art = convert_to_ascii(&img, 100);
 
-    let mut file = File::create(output_file)?;
-    file.write_all(ascii_art.as_bytes())?;
+    let mut file = File::create(output_file).map_err(handle_error)?;
+    file.write_all(ascii_art.as_bytes()).map_err(handle_error)?;
 
     println!("ASCII art saved to {}", output_file);
 
@@ -56,4 +56,9 @@ fn convert_to_ascii(img: &image::DynamicImage, width: u32) -> String {
     }
 
     result
+}
+
+fn handle_error(e: std::io::Error) -> Box<dyn std::error::Error> {
+    eprintln!("Error: {}", e);
+    Box::new(e)
 }
