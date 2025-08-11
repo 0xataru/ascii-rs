@@ -299,8 +299,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you have questions or suggestions:
 
-- Create an [Issue](https://github.com/your-repo/ascii-converter/issues)
-- Check [Discussions](https://github.com/your-repo/ascii-converter/discussions)
+- Create an [Issue](https://github.com/0xataru/ascii-converter/issues)
+- Check [Discussions](https://github.com/0xataru/ascii-converter/discussions)
 
 ## 🎯 Roadmap
 
@@ -314,4 +314,4 @@ If you have questions or suggestions:
 
 ---
 
-Made with ❤️ and 🦀 by [Your Name]
+Made with ❤️ and 🦀 by [Ataru](https://github.com/0xataru)
