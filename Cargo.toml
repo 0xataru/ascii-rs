@@ -4,5 +4,29 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+# Image processing
 image = "0.25.5"
 rayon = "1.10.0"
+
+# Web framework and async runtime
+axum = { version = "0.7", features = ["multipart"] }
+tokio = { version = "1.0", features = ["full"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "fs"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Utilities
+uuid = { version = "1.0", features = ["v4", "serde"] }
+base64 = "0.22"
+mime = "0.3"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+chrono = { version = "0.4", features = ["serde"] }
+async-trait = "0.1"

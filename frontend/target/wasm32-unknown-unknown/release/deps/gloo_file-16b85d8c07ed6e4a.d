@@ -1,0 +1,11 @@
+/Users/ataru/dev/ataru/ascii-converter/frontend/target/wasm32-unknown-unknown/release/deps/gloo_file-16b85d8c07ed6e4a.d: /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/lib.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/blob.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/file_list.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/file_reader.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/object_url.rs
+
+/Users/ataru/dev/ataru/ascii-converter/frontend/target/wasm32-unknown-unknown/release/deps/libgloo_file-16b85d8c07ed6e4a.rlib: /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/lib.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/blob.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/file_list.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/file_reader.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/object_url.rs
+
+/Users/ataru/dev/ataru/ascii-converter/frontend/target/wasm32-unknown-unknown/release/deps/libgloo_file-16b85d8c07ed6e4a.rmeta: /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/lib.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/blob.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/file_list.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/file_reader.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/object_url.rs
+
+/Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/lib.rs:
+/Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/blob.rs:
+/Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/file_list.rs:
+/Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/file_reader.rs:
+/Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-file-0.3.0/src/object_url.rs:
