@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Converter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .upload-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-left: 4px solid #4ECDC4;
+        }
+        .ascii-art {
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            font-size: 8px;
+            line-height: 1;
+            background: black;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            overflow: auto;
+            max-height: 600px;
+            border: 1px solid #00ff00;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            border-left: 4px solid #ff4444;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .success {
+            background: rgba(0, 255, 0, 0.2);
+            border-left: 4px solid #44ff44;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 ASCII Art Converter</h1>
+        
+        <div class="upload-section">
+            <h3>📁 Upload Image</h3>
+            <input type="file" id="imageInput" accept="image/*">
+        </div>
+
+        <div class="controls">
+            <div>
+                <label for="width">Width (characters):</label>
+                <input type="number" id="width" value="100" min="10" max="500">
+            </div>
+            <div>
+                <label for="detail">Detail Level:</label>
+                <select id="detail">
+                    <option value="high">High Detail</option>
+                    <option value="low">Low Detail</option>
+                </select>
+            </div>
+            <div>
+                <label for="contrast">Contrast:</label>
+                <input type="number" id="contrast" value="1.2" min="0.1" max="3.0" step="0.1">
+            </div>
+            <div>
+                <label for="blur">Blur:</label>
+                <input type="number" id="blur" value="0.5" min="0.0" max="5.0" step="0.1">
+            </div>
+        </div>
+
+        <button onclick="convertImage()" id="convertBtn">🚀 Convert to ASCII</button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Converting image to ASCII art...</p>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let uploadedImageId = null;
+
+        async function uploadImage(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await fetch('http://localhost:3000/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Upload failed');
+                }
+
+                const data = await response.json();
+                return data.image_id;
+            } catch (error) {
+                throw new Error(`Upload failed: ${error.message}`);
+            }
+        }
+
+        async function convertToAscii(imageId, width, detail, contrast, blur) {
+            const params = new URLSearchParams({
+                width: width,
+                detail: detail,
+                contrast: contrast,
+                blur: blur
+            });
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/convert/${imageId}?${params}`, {
+                    method: 'POST'
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Conversion failed');
+                }
+
+                const data = await response.json();
+                return data.ascii_art;
+            } catch (error) {
+                throw new Error(`Conversion failed: ${error.message}`);
+            }
+        }
+
+        async function convertImage() {
+            const fileInput = document.getElementById('imageInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showError('Please select an image file first');
+                return;
+            }
+
+            const convertBtn = document.getElementById('convertBtn');
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+
+            convertBtn.disabled = true;
+            loading.style.display = 'block';
+            result.innerHTML = '';
+
+            try {
+                // Upload image
+                const imageId = await uploadImage(file);
+                showSuccess(`Image uploaded successfully! ID: ${imageId}`);
+
+                // Get conversion parameters
+                const width = document.getElementById('width').value;
+                const detail = document.getElementById('detail').value;
+                const contrast = document.getElementById('contrast').value;
+                const blur = document.getElementById('blur').value;
+
+                // Convert to ASCII
+                const asciiArt = await convertToAscii(imageId, width, detail, contrast, blur);
+
+                // Display result
+                result.innerHTML += `
+                    <div class="result">
+                        <h3>✨ ASCII Art Result:</h3>
+                        <div class="ascii-art">${asciiArt}</div>
+                        <button onclick="downloadAscii('${asciiArt.replace(/'/g, "\\'")}')">💾 Download ASCII Art</button>
+                    </div>
+                `;
+
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                convertBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        function showError(message) {
+            const result = document.getElementById('result');
+            result.innerHTML += `<div class="error">❌ Error: ${message}</div>`;
+        }
+
+        function showSuccess(message) {
+            const result = document.getElementById('result');
+            result.innerHTML += `<div class="success">✅ ${message}</div>`;
+        }
+
+        function downloadAscii(asciiArt) {
+            const blob = new Blob([asciiArt], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ascii-art.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Health check
+        async function checkHealth() {
+            try {
+                const response = await fetch('http://localhost:3000/health');
+                const data = await response.json();
+                console.log('Server status:', data);
+            } catch (error) {
+                console.error('Server not available:', error);
+                showError('Server is not available. Please make sure the ASCII converter server is running on port 3000.');
+            }
+        }
+
+        // Check server status on page load
+        window.addEventListener('load', checkHealth);
+    </script>
+</body>
+</html>
