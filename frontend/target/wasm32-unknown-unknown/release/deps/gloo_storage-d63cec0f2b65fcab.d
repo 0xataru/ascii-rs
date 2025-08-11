@@ -1,0 +1,10 @@
+/Users/ataru/dev/ataru/ascii-converter/frontend/target/wasm32-unknown-unknown/release/deps/gloo_storage-d63cec0f2b65fcab.d: /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/lib.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/errors.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/local_storage.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/session_storage.rs
+
+/Users/ataru/dev/ataru/ascii-converter/frontend/target/wasm32-unknown-unknown/release/deps/libgloo_storage-d63cec0f2b65fcab.rlib: /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/lib.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/errors.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/local_storage.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/session_storage.rs
+
+/Users/ataru/dev/ataru/ascii-converter/frontend/target/wasm32-unknown-unknown/release/deps/libgloo_storage-d63cec0f2b65fcab.rmeta: /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/lib.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/errors.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/local_storage.rs /Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/session_storage.rs
+
+/Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/lib.rs:
+/Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/errors.rs:
+/Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/local_storage.rs:
+/Users/ataru/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-storage-0.2.2/src/session_storage.rs:
