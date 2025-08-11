@@ -1,71 +1,122 @@
 # ASCII Art Converter 🎨
 
-Современный веб-сервис для конвертации изображений в ASCII-арт с улучшенными алгоритмами обработки изображений и архитектурой Clean Architecture.
+A modern web service for converting images to ASCII art with enhanced image processing algorithms and Clean Architecture, featuring a Rust WebAssembly frontend.
 
-## ✨ Возможности
+## ✨ Features
 
-- 🖼️ **Загрузка изображений** - Поддержка основных форматов (JPEG, PNG, GIF, WebP, BMP)
-- 🎯 **Улучшенные алгоритмы** - Усовершенствованная обработка изображений для более четких результатов
-- ⚙️ **Настраиваемые параметры** - Ширина, уровень детализации, контрастность, размытие
-- 🌐 **REST API** - Полнофункциональный веб-API с документированными endpoints
-- 🏗️ **Clean Architecture** - Четкое разделение слоев и dependency injection
-- 🚀 **Производительность** - Асинхронная обработка с использованием Tokio
-- 📊 **Мониторинг** - Логирование и health check endpoints
+- 🖼️ **Image Upload** - Support for major formats (JPEG, PNG, GIF, WebP, BMP)
+- 🎯 **Enhanced Algorithms** - Advanced image processing for sharper ASCII results
+- ⚙️ **Customizable Parameters** - Width, detail level, contrast, blur adjustment
+- 🌐 **REST API** - Full-featured web API with documented endpoints
+- 🦀 **Rust WASM Frontend** - Modern web interface built with Yew framework
+- 🏗️ **Clean Architecture** - Clear separation of layers with dependency injection
+- 🚀 **Performance** - Asynchronous processing with Tokio
+- 📊 **Monitoring** - Structured logging and health check endpoints
 
-## 🔧 Технический стек
+## 🔧 Tech Stack
 
-- **Rust** - Системный язык программирования
-- **Axum** - Современный веб-фреймворк
-- **Tokio** - Асинхронная среда выполнения
-- **Image** - Библиотека для обработки изображений
-- **Serde** - Сериализация/десериализация данных
-- **Thiserror** - Обработка ошибок
-- **Tracing** - Структурированное логирование
+### Backend
+- **Rust** - Systems programming language
+- **Axum** - Modern web framework
+- **Tokio** - Async runtime
+- **Image** - Image processing library
+- **Serde** - Data serialization/deserialization
+- **Thiserror** - Error handling
+- **Tracing** - Structured logging
 
-## 🏗️ Архитектура
+### Frontend
+- **Rust + WebAssembly** - Frontend compiled to WASM
+- **Yew** - Modern web framework for Rust
+- **Trunk** - WASM web application bundler
+- **Gloo** - Web APIs and utilities for WASM
 
-Проект следует принципам Clean Architecture:
+## 🏗️ Architecture
+
+The project follows Clean Architecture principles:
 
 ```
 src/
-├── domain/              # Бизнес-логика
-│   ├── entities/        # Сущности (ImageData, AsciiArt)
-│   ├── repositories/    # Интерфейсы репозиториев
-│   └── value_objects/   # Объекты-значения (ConversionConfig, ImageFormat)
-├── application/         # Логика приложения
-│   ├── use_cases/       # Сценарии использования
-│   └── services/        # Доменные сервисы
-├── infrastructure/     # Инфраструктура
-│   ├── repositories/   # Реализации репозиториев
-│   └── web/           # Веб-инфраструктура
-└── presentation/      # Слой представления
-    └── handlers/      # HTTP обработчики
+├── domain/              # Business logic
+│   ├── entities/        # Domain entities (ImageData, AsciiArt)
+│   ├── repositories/    # Repository interfaces
+│   └── value_objects/   # Value objects (ConversionConfig, ImageFormat)
+├── application/         # Application logic
+│   ├── use_cases/       # Use cases (business operations)
+│   └── services/        # Domain services
+├── infrastructure/     # Infrastructure
+│   ├── repositories/   # Repository implementations
+│   └── web/           # Web infrastructure
+└── presentation/      # Presentation layer
+    └── handlers/      # HTTP handlers
+
+frontend/
+├── src/
+│   └── lib.rs         # Yew WASM application
+├── index.html         # HTML template
+├── Cargo.toml         # Frontend dependencies
+└── Trunk.toml         # Build configuration
 ```
 
-## 🚀 Быстрый старт
+## 🚀 Quick Start
 
-### Запуск сервера
+### Prerequisites
+
+- **Rust** (latest stable version)
+- **Trunk** (for frontend building)
+- **WASM target** for Rust
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd ascii-converter
+   ```
+
+2. **Install Trunk and WASM target**
+   ```bash
+   cargo install trunk wasm-bindgen-cli
+   rustup target add wasm32-unknown-unknown
+   ```
+
+3. **Build the frontend**
+   ```bash
+   cd frontend
+   trunk build --release
+   cd ..
+   ```
+
+4. **Run the server**
+   ```bash
+   cargo run
+   ```
+
+5. **Open in browser**
+   ```
+   http://localhost:3000
+   ```
+
+### Alternative: Development Mode
+
+For development with auto-reload:
 
 ```bash
-# Клонировать репозиторий
-git clone <repository-url>
-cd ascii-converter
-
-# Запустить сервер
+# Terminal 1: Run backend
 cargo run
 
-# Сервер будет доступен на http://localhost:3000
+# Terminal 2: Run frontend with hot reload
+cd frontend
+trunk serve --port 8080
 ```
 
-### Использование веб-интерфейса
-
-1. Откройте `index.html` в браузере
-2. Выберите изображение для загрузки
-3. Настройте параметры конвертации
-4. Нажмите "Convert to ASCII"
-5. Скачайте результат
+Then open `http://localhost:8080` for frontend with hot reload.
 
 ## 📚 API Documentation
+
+### Base URL
+```
+http://localhost:3000
+```
 
 ### Endpoints
 
@@ -90,15 +141,15 @@ Content-Type: multipart/form-data
 ```
 
 **Parameters:**
-- `image` - Файл изображения (form field)
+- `image` - Image file (form field)
 
 **Response:**
 ```json
 {
   "image_id": "uuid-string",
-  "format": "JPEG",
-  "width": 1920,
-  "height": 1080,
+  "format": "PNG",
+  "width": 840,
+  "height": 859,
   "message": "Image uploaded successfully"
 }
 ```
@@ -109,10 +160,10 @@ POST /api/convert/{image_id}?width=100&detail=high&contrast=1.2&blur=0.5
 ```
 
 **Query Parameters:**
-- `width` (optional) - Ширина ASCII арта в символах (default: 100)
-- `detail` (optional) - Уровень детализации: "high" или "low" (default: "high")
-- `contrast` (optional) - Фактор контрастности (0.1-3.0, default: 1.2)
-- `blur` (optional) - Размытие (0.0-5.0, default: 0.5)
+- `width` (optional) - ASCII art width in characters (default: 100)
+- `detail` (optional) - Detail level: "high" or "low" (default: "high")
+- `contrast` (optional) - Contrast factor (0.1-3.0, default: 1.2)
+- `blur` (optional) - Blur sigma (0.0-5.0, default: 0.5)
 
 **Response:**
 ```json
@@ -124,116 +175,143 @@ POST /api/convert/{image_id}?width=100&detail=high&contrast=1.2&blur=0.5
 }
 ```
 
-## 🎨 Алгоритмические улучшения
+## 🎨 Algorithm Improvements
 
-### 1. Усовершенствованная фильтрация
-- **Catmull-Rom** фильтр для ресэмплинга вместо Lanczos3
-- Лучшее сохранение деталей при изменении размера
+### 1. Enhanced Filtering
+- **Catmull-Rom** filter for resampling instead of Lanczos3
+- Better detail preservation during resizing
 
-### 2. Улучшенная обработка контраста
-- Адаптивное увеличение контраста перед конвертацией
-- Настраиваемый фактор контрастности
+### 2. Improved Contrast Processing
+- Adaptive contrast enhancement before conversion
+- Configurable contrast factor
 
-### 3. Гауссово размытие
-- Снижение шума с сохранением краев
-- Настраиваемый параметр sigma
+### 3. Gaussian Blur
+- Edge-preserving noise reduction
+- Configurable sigma parameter
 
-### 4. Адаптивная пороговая обработка
-- Эквализация гистограммы для улучшения распределения яркости
-- Квантизация на заданное количество уровней
+### 4. Adaptive Thresholding
+- Histogram equalization for better brightness distribution
+- Quantization to specified levels
 
-### 5. Перцептивное маппирование
-- Гамма-коррекция для лучшего восприятия
-- Оптимизированный набор ASCII символов
+### 5. Perceptual Mapping
+- Gamma correction for better visual perception
+- Optimized ASCII character sets
 
-## 🧪 Тестирование
+## 🧪 Testing
 
 ```bash
-# Запуск тестов
+# Run backend tests
 cargo test
 
-# Запуск с подробным выводом
-cargo test -- --nocapture
-
-# Проверка форматирования
+# Check code formatting
 cargo fmt
 
-# Линтинг
+# Run linting
 cargo clippy
-```
 
-## 📝 Примеры использования
-
-### Curl запросы
-
-```bash
-# Health check
+# Test API endpoints
 curl http://localhost:3000/health
 
-# Upload image
-curl -X POST \
-  -F "image=@path/to/your/image.jpg" \
-  http://localhost:3000/api/upload
+# Upload test image
+curl -X POST -F "image=@test.jpg" http://localhost:3000/api/upload
 
 # Convert to ASCII
-curl -X POST \
-  "http://localhost:3000/api/convert/{image_id}?width=80&detail=high&contrast=1.5"
+curl -X POST "http://localhost:3000/api/convert/{image_id}?width=80&detail=high"
 ```
 
-### Программное использование
+## 🛠️ Development
 
-```rust
-use ascii_converter::{
-    application::services::AsciiConversionService,
-    domain::{entities::ImageData, value_objects::ConversionConfig},
-};
+### Project Structure
 
-// Создание сервиса конвертации
-let service = AsciiConversionService::new();
+- `src/domain/` - Pure business logic, framework-independent
+- `src/application/` - Use cases and application services
+- `src/infrastructure/` - Interface implementations (repositories, web)
+- `src/presentation/` - HTTP handlers and routes
+- `frontend/` - Rust WASM web application
 
-// Загрузка изображения
-let image_data = ImageData::new(/* ... */);
+### Development Principles
 
-// Конфигурация конвертации
-let config = ConversionConfig::new(100, DetailLevel::High);
+1. **Dependency Inversion** - High-level modules don't depend on low-level ones
+2. **Single Responsibility** - Each module has one reason to change
+3. **Open/Closed** - Open for extension, closed for modification
+4. **Interface Segregation** - Interfaces are client-specific
 
-// Конвертация
-let ascii_art = service.convert_to_ascii(&image_data, &config).await?;
+### Adding New Features
+
+1. **Domain entities** - Add to `src/domain/entities/`
+2. **Use cases** - Implement in `src/application/use_cases/`
+3. **Repository interfaces** - Define in `src/domain/repositories/`
+4. **Repository implementations** - Add to `src/infrastructure/repositories/`
+5. **HTTP handlers** - Create in `src/presentation/handlers/`
+
+## 📦 Deployment
+
+### Docker (optional)
+
+```dockerfile
+FROM rust:1.70 as builder
+WORKDIR /app
+COPY . .
+RUN cargo install trunk wasm-bindgen-cli
+RUN rustup target add wasm32-unknown-unknown
+RUN cd frontend && trunk build --release
+RUN cargo build --release
+
+FROM debian:bookworm-slim
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /app/target/release/ascii-converter /usr/local/bin/
+COPY --from=builder /app/frontend/dist /app/frontend/dist
+WORKDIR /app
+EXPOSE 3000
+CMD ["ascii-converter"]
 ```
 
-## 🛠️ Разработка
+### Environment Variables
 
-### Структура проекта
+- `PORT` - Server port (default: 3000)
+- `RUST_LOG` - Logging level (default: info)
 
-- `src/domain/` - Чистая бизнес-логика, не зависит от внешних фреймворков
-- `src/application/` - Сценарии использования и сервисы приложения
-- `src/infrastructure/` - Реализации интерфейсов (репозитории, веб)
-- `src/presentation/` - HTTP обработчики и маршруты
+## 🤝 Contributing
 
-### Принципы
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-1. **Dependency Inversion** - Высокоуровневые модули не зависят от низкоуровневых
-2. **Single Responsibility** - Каждый модуль имеет одну причину для изменения
-3. **Open/Closed** - Открыт для расширения, закрыт для модификации
-4. **Interface Segregation** - Интерфейсы специфичны для клиентов
+### Commit Convention
 
-## 📄 Лицензия
+This project follows [Conventional Commits](https://www.conventionalcommits.org/):
 
-Этот проект находится под лицензией MIT. См. файл [LICENSE](LICENSE) для получения подробной информации.
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation changes
+- `style:` - Code style changes
+- `refactor:` - Code refactoring
+- `test:` - Adding tests
+- `chore:` - Maintenance tasks
 
-## 🤝 Вклад в развитие
+## 📄 License
 
-Мы приветствуем вклад в развитие проекта! Пожалуйста:
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-1. Форкните проект
-2. Создайте ветку для новой функции (`git checkout -b feature/amazing-feature`)
-3. Зафиксируйте изменения (`git commit -m 'feat: add amazing feature'`)
-4. Отправьте ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
+## 📞 Support
 
-## 📞 Поддержка
+If you have questions or suggestions:
 
-Если у вас есть вопросы или предложения, пожалуйста:
+- Create an [Issue](https://github.com/your-repo/ascii-converter/issues)
+- Check [Discussions](https://github.com/your-repo/ascii-converter/discussions)
 
-- Создайте [Issue](https://github.com/your-repo/ascii-converter/issues)
-- Посмотрите [Discussions](https://github.com/your-repo/ascii-converter/discussions)
+## 🎯 Roadmap
+
+- [ ] Database persistence (PostgreSQL/SQLite)
+- [ ] User authentication and saved conversions
+- [ ] Batch processing for multiple images
+- [ ] Additional output formats (SVG, HTML)
+- [ ] Advanced image filters and effects
+- [ ] Docker containerization
+- [ ] CI/CD pipeline
+
+---
+
+Made with ❤️ and 🦀 by [Your Name]

@@ -6,6 +6,7 @@ use axum::{
     routing::{get, post},
     Router,
 };
+use tower_http::services::ServeDir;
 use tower_http::cors::CorsLayer;
 
 /// Type alias for concrete application state
@@ -19,6 +20,8 @@ pub fn create_routes() -> Router<ConcreteAppState> {
         // API routes
         .route("/api/upload", post(upload_image))
         .route("/api/convert/:image_id", post(convert_to_ascii))
+        // Static frontend (built with Trunk into frontend/dist)
+        .nest_service("/", ServeDir::new("frontend/dist").append_index_html_on_directories(true))
         // CORS layer for web frontend
         .layer(CorsLayer::permissive())
 }

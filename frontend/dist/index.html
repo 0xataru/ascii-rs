@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASCII Converter - Rust WASM</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+<link rel="modulepreload" href="/frontend-88628673f3172058.js" crossorigin="anonymous" integrity="sha384-S6HSEMeiXQZ1m173/PTJFeupOyAKOdlfCDtHx4MPF04eigLvrTkP0GG1CWWiFbgt"><link rel="preload" href="/frontend-88628673f3172058_bg.wasm" crossorigin="anonymous" integrity="sha384-1FK0LwM0JVtapzApJVPmRCCLx3iIaV9Q/BQNf9DvYD2zExz9479JT/iy4qtuMr7U" as="fetch" type="application/wasm"></head>
+<body>
+    <div id="root"></div>
+
+<script type="module">
+import init, * as bindings from '/frontend-88628673f3172058.js';
+const wasm = await init({ module_or_path: '/frontend-88628673f3172058_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script></body>
+</html>
