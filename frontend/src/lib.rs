@@ -169,14 +169,14 @@ fn app() -> Html {
     };
 
     html! {
+        <>
         <div style="
             max-width: 1000px; 
             margin: 0 auto; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
             color: white;
+            flex: 1;
         ">
             <div style="
                 background: rgba(255, 255, 255, 0.1);
@@ -369,33 +369,37 @@ fn app() -> Html {
                     </div>
                 }
             </div>
-            
-            // Footer
-            <div style="
-                margin-top: 40px;
-                padding: 20px;
-                text-align: center;
-                border-top: 1px solid rgba(255, 255, 255, 0.2);
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 10px;
-                font-size: 14px;
-                color: rgba(255, 255, 255, 0.8);
-            ">
-                {"Made with ❤️ and 🦀 by "}
-                <a 
-                    href="https://github.com/0xataru" 
-                    target="_blank" 
-                    style="
-                        color: #4ECDC4;
-                        text-decoration: none;
-                        font-weight: bold;
-                        transition: color 0.2s;
-                    "
-                >
-                    {"Ataru"}
-                </a>
-            </div>
         </div>
+        
+        <div style="
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto 0 auto;
+            padding: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        ">
+            {"Made with ❤️ and 🦀 by "}
+            <a 
+                href="https://github.com/0xataru" 
+                target="_blank" 
+                style="
+                    color: #4ECDC4;
+                    text-decoration: none;
+                    font-weight: bold;
+                    transition: color 0.2s ease;
+                "
+            >
+                {"Ataru"}
+            </a>
+        </div>
+        </>
     }
 }
 
