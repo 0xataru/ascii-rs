@@ -63,7 +63,19 @@ jobs:
     if: github.ref == 'refs/heads/main'
     
     steps:
+    - name: Check if deploy hook is configured
+      run: |
+        if [ -z "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+          echo "⚠️ RENDER_DEPLOY_HOOK secret not configured"
+          echo "Please add it in GitHub repository settings: Settings → Secrets and variables → Actions"
+          echo "Get the deploy hook URL from your Render service settings"
+          exit 1
+        fi
+        
     - name: Trigger Render deployment
       run: |
-        curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
-      # Note: need to add RENDER_DEPLOY_HOOK secret in GitHub repository settings
+        echo "🚀 Triggering deployment to Render..."
+        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}" \
+          -H "Content-Type: application/json" \
+          -d '{"ref": "${{ github.sha }}"}'
+        echo "✅ Deploy hook triggered successfully"
