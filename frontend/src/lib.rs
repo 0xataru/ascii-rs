@@ -1,6 +1,7 @@
+use std::ops::RangeInclusive;
+
 use gloo_net::http::Request;
 use serde::Deserialize;
-use wasm_bindgen::JsCast;
 use web_sys::{FormData, HtmlInputElement};
 use yew::prelude::*;
 
@@ -42,7 +43,7 @@ fn app() -> Html {
         let detail_state = detail.clone();
         let contrast_state = contrast.clone();
         let blur_state = blur.clone();
-        
+
         Callback::from(move |_| {
             let file_input = file_input_ref
                 .cast::<HtmlInputElement>()
@@ -65,13 +66,14 @@ fn app() -> Html {
             wasm_bindgen_futures::spawn_local(async move {
                 is_loading.set(true);
                 status.set(Some("Loading image...".into()));
-                
+
                 let form = FormData::new().expect("formdata");
                 form.append_with_blob_and_filename("image", &file, &file.name())
                     .expect("append file");
 
                 let upload_resp = Request::post("/api/upload")
-                    .body(form).expect("failed to set body")
+                    .body(form)
+                    .expect("failed to set body")
                     .send()
                     .await;
 
@@ -90,17 +92,21 @@ fn app() -> Html {
                             data.image_id, width_value, detail_value, contrast_value, blur_value
                         );
                         status.set(Some("Converting to ASCII...".into()));
-                        
+
                         match Request::post(&url).send().await {
                             Ok(resp2) => {
                                 if !resp2.ok() {
-                                    status.set(Some(format!("Error converting: {}", resp2.status())));
+                                    status
+                                        .set(Some(format!("Error converting: {}", resp2.status())));
                                     is_loading.set(false);
                                     return;
                                 }
                                 let conv: ConvertResponse = resp2.json().await.unwrap();
                                 ascii_art.set(Some(conv.ascii_art));
-                                status.set(Some(format!("Done! ASCII {}x{}", conv.width, conv.height)));
+                                status.set(Some(format!(
+                                    "Done! ASCII {}x{}",
+                                    conv.width, conv.height
+                                )));
                                 is_loading.set(false);
                             }
                             Err(e) => {
@@ -122,14 +128,14 @@ fn app() -> Html {
         let width = width.clone();
         Callback::from(move |e: InputEvent| {
             let input: HtmlInputElement = e.target_unchecked_into();
-            if let Ok(v) = input.value().parse::<u32>() { 
-                if v >= 10 && v <= 500 {
-                    width.set(v); 
+            if let Ok(v) = input.value().parse::<u32>() {
+                if RangeInclusive::new(10, 500).contains(&v) {
+                    width.set(v);
                 }
             }
         })
     };
-    
+
     let on_detail_change = {
         let detail = detail.clone();
         Callback::from(move |e: Event| {
@@ -137,26 +143,26 @@ fn app() -> Html {
             detail.set(input.value());
         })
     };
-    
+
     let on_contrast_change = {
         let contrast = contrast.clone();
         Callback::from(move |e: InputEvent| {
             let input: HtmlInputElement = e.target_unchecked_into();
-            if let Ok(v) = input.value().parse::<f32>() { 
-                if v >= 0.1 && v <= 3.0 {
-                    contrast.set(v); 
+            if let Ok(v) = input.value().parse::<f32>() {
+                if RangeInclusive::new(0.1, 3.0).contains(&v) {
+                    contrast.set(v);
                 }
             }
         })
     };
-    
+
     let on_blur_change = {
         let blur = blur.clone();
         Callback::from(move |e: InputEvent| {
             let input: HtmlInputElement = e.target_unchecked_into();
-            if let Ok(v) = input.value().parse::<f32>() { 
-                if v >= 0.0 && v <= 5.0 {
-                    blur.set(v); 
+            if let Ok(v) = input.value().parse::<f32>() {
+                if RangeInclusive::new(0.0, 5.0).contains(&v) {
+                    blur.set(v);
                 }
             }
         })
@@ -183,7 +189,7 @@ fn app() -> Html {
                 <h1 style="text-align: center; font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
                     {"🎨 ASCII Converter (Rust WASM)"}
                 </h1>
-                
+
                 <div style="
                     margin: 20px 0;
                     padding: 20px;
@@ -194,9 +200,9 @@ fn app() -> Html {
                     <label style="display: block; margin-bottom: 10px; font-weight: bold;">
                         {"📁 Choose an image:"}
                     </label>
-                    <input 
-                        type="file" 
-                        ref={file_input_ref} 
+                    <input
+                        type="file"
+                        ref={file_input_ref}
                         accept="image/*"
                         style="
                             width: 100%;
@@ -208,7 +214,7 @@ fn app() -> Html {
                         "
                     />
                 </div>
-                
+
                 <div style="
                     display: grid; 
                     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
@@ -219,11 +225,11 @@ fn app() -> Html {
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">
                             {"Width (symbols):"}
                         </label>
-                        <input 
-                            type="number" 
-                            min="10" 
-                            max="500" 
-                            value={width.to_string()} 
+                        <input
+                            type="number"
+                            min="10"
+                            max="500"
+                            value={width.to_string()}
                             oninput={on_width_change}
                             style="
                                 width: 100%;
@@ -239,8 +245,8 @@ fn app() -> Html {
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">
                             {"Detail:"}
                         </label>
-                        <select 
-                            value={(*detail).clone()} 
+                        <select
+                            value={(*detail).clone()}
                             onchange={on_detail_change}
                             style="
                                 width: 100%;
@@ -259,12 +265,12 @@ fn app() -> Html {
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">
                             {"Contrast:"}
                         </label>
-                        <input 
-                            type="number" 
-                            step="0.1" 
-                            min="0.1" 
-                            max="3.0" 
-                            value={contrast.to_string()} 
+                        <input
+                            type="number"
+                            step="0.1"
+                            min="0.1"
+                            max="3.0"
+                            value={contrast.to_string()}
                             oninput={on_contrast_change}
                             style="
                                 width: 100%;
@@ -280,12 +286,12 @@ fn app() -> Html {
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">
                             {"Blur:"}
                         </label>
-                        <input 
-                            type="number" 
-                            step="0.1" 
-                            min="0.0" 
-                            max="5.0" 
-                            value={blur.to_string()} 
+                        <input
+                            type="number"
+                            step="0.1"
+                            min="0.0"
+                            max="5.0"
+                            value={blur.to_string()}
                             oninput={on_blur_change}
                             style="
                                 width: 100%;
@@ -298,9 +304,9 @@ fn app() -> Html {
                         />
                     </div>
                 </div>
-                
+
                 <div style="margin: 20px 0;">
-                    <button 
+                    <button
                         onclick={on_convert}
                         disabled={*is_loading}
                         style="
@@ -325,7 +331,7 @@ fn app() -> Html {
                         }
                     </button>
                 </div>
-                
+
                 if let Some(s) = &*status {
                     <div style="
                         padding: 15px;
@@ -337,7 +343,7 @@ fn app() -> Html {
                         {s.clone()}
                     </div>
                 }
-                
+
                 if let Some(a) = &*ascii_art {
                     <div style="
                         margin-top: 20px;
@@ -373,3 +379,4 @@ use wasm_bindgen::prelude::*;
 pub fn start() {
     yew::Renderer::<App>::new().render();
 }
+
