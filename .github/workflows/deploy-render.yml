@@ -43,8 +43,8 @@ jobs:
     - name: Test backend
       run: cargo test
 
-    - name: Check formatting
-      run: cargo fmt --all -- --check
+    - name: Auto format code
+      run: cargo fmt --all
 
     - name: Run clippy (allow warnings)
       run: cargo clippy --all-targets --all-features

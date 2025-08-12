@@ -13,13 +13,10 @@ use std::sync::Arc;
 use tokio::net::TcpListener;
 use tracing::{info, Level};
 
-
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Initialize tracing
-    tracing_subscriber::fmt()
-        .with_max_level(Level::INFO)
-        .init();
+    tracing_subscriber::fmt().with_max_level(Level::INFO).init();
 
     // Create repositories
     let image_repo = Arc::new(InMemoryImageRepository::new());
