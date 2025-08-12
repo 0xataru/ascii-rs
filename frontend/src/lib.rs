@@ -371,34 +371,50 @@ fn app() -> Html {
             </div>
         </div>
         
-        <div style="
+        <footer style="
             width: 100%;
             max-width: 1000px;
-            margin: 20px auto 0 auto;
-            padding: 20px;
+            margin: 30px auto 20px auto;
+            padding: 25px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-size: 16px;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1000;
         ">
-            {"Made with ❤️ and 🦀 by "}
-            <a 
-                href="https://github.com/0xataru" 
-                target="_blank" 
-                style="
-                    color: #4ECDC4;
-                    text-decoration: none;
-                    font-weight: bold;
-                    transition: color 0.2s ease;
-                "
-            >
-                {"Ataru"}
-            </a>
-        </div>
+            <div style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                flex-wrap: wrap;
+            ">
+                <span>{"Made with"}</span>
+                <span style="font-size: 18px;">{"❤️"}</span>
+                <span>{"and"}</span>
+                <span style="font-size: 18px;">{"🦀"}</span>
+                <span>{"by"}</span>
+                <a 
+                    href="https://github.com/0xataru" 
+                    target="_blank" 
+                    style="
+                        color: #4ECDC4;
+                        text-decoration: none;
+                        font-weight: bold;
+                        font-size: 18px;
+                        transition: all 0.3s ease;
+                        border-bottom: 2px solid transparent;
+                    "
+                >
+                    {"Ataru"}
+                </a>
+            </div>
+        </footer>
         </>
     }
 }
