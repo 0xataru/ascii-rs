@@ -29,7 +29,7 @@ services:
       # Final check
       test -f target/release/ascii-converter || (echo "Backend not built!" && exit 1)
       test -f frontend/dist/index.html || (echo "Frontend not built!" && exit 1)
-    startCommand: ./target/release/ascii-converter
+    startCommand: ./start.sh
     envVars:
       - key: PORT
         value: 10000
