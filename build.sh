@@ -1,37 +1,44 @@
 #!/bin/bash
-
-# Build script for ASCII Converter full-stack application
-
 set -e
 
-echo "🦀 Building ASCII Converter..."
+echo "🔧 Setting up build environment..."
 
-# Check if required tools are installed
-if ! command -v trunk &> /dev/null; then
-    echo "Installing Trunk..."
-    cargo install trunk
-fi
-
-if ! command -v wasm-bindgen &> /dev/null; then
-    echo "Installing wasm-bindgen-cli..."
-    cargo install wasm-bindgen-cli
-fi
-
-# Add WASM target if not already added
+# Add Rust target for WebAssembly
 rustup target add wasm32-unknown-unknown
 
-echo "📦 Building frontend..."
+# Install trunk and wasm-bindgen-cli with specific versions
+echo "📦 Installing trunk and wasm-bindgen-cli..."
+cargo install trunk --version 0.21.14
+cargo install wasm-bindgen-cli --version 0.2.100
+
+# Build frontend first
+echo "🎨 Building frontend..."
 cd frontend
-trunk build --release --public-url /
+trunk build --release
 cd ..
 
-echo "🔧 Building backend..."
+# Verify frontend was built
+echo "✅ Verifying frontend build..."
+if [ -f "frontend/dist/index.html" ]; then
+    echo "Frontend built successfully!"
+    ls -la frontend/dist/
+else
+    echo "❌ Frontend build failed!"
+    exit 1
+fi
+
+# Build backend
+echo "🦀 Building backend..."
 cargo build --release
 
-echo "✅ Build complete!"
-echo "Frontend files are in: frontend/dist/"
-echo "Backend binary is in: target/release/ascii-converter"
-echo ""
-echo "To run locally:"
-echo "  ./target/release/ascii-converter"
-echo "  then open http://localhost:3000"
+# Verify backend was built
+echo "✅ Verifying backend build..."
+if [ -f "target/release/ascii-converter" ]; then
+    echo "Backend built successfully!"
+    ls -la target/release/ascii-converter
+else
+    echo "❌ Backend build failed!"
+    exit 1
+fi
+
+echo "🎉 Build completed successfully!"

@@ -68,7 +68,10 @@ pub fn create_routes() -> Router<ConcreteAppState> {
         // CORS layer for web frontend
         .layer(CorsLayer::permissive())
         // Static frontend (built with Trunk into frontend/dist) - MUST BE LAST
-        .fallback_service(ServeDir::new("frontend/dist"))
+        .fallback_service(
+            ServeDir::new("frontend/dist")
+                .not_found_service(ServeDir::new("static"))
+        )
 }
 
 /// Create the full application with state
