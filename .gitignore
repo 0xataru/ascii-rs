@@ -1,13 +1,15 @@
 # Rust target directories
 /target/
 /frontend/target/
+frontend/target/
+
+# Frontend build output
+/frontend/dist/
+frontend/dist/
 
 # Rust compiled files
 *.rs.bk
 *.pdb
-
-# Frontend build output
-/frontend/dist/
 
 # IDE files
 .vscode/

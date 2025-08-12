@@ -6,22 +6,29 @@ services:
       # Install Rust tools
       rustup target add wasm32-unknown-unknown
       
-      # Install Trunk and wasm-bindgen-cli
-      cargo install trunk wasm-bindgen-cli
+      # Install specific version of trunk and wasm-bindgen-cli
+      cargo install trunk --version 0.21.14
+      cargo install wasm-bindgen-cli --version 0.2.100
       
       # Build frontend first
       cd frontend
-      trunk build --release --public-url /
+      trunk build --release
       cd ..
       
       # Verify frontend was built
-      ls -la frontend/dist/
+      echo "Frontend dist contents:"
+      ls -la frontend/dist/ || echo "Frontend dist not found!"
       
       # Build backend
       cargo build --release
       
       # Verify backend was built  
-      ls -la target/release/
+      echo "Backend binary:"
+      ls -la target/release/ || echo "Backend binary not found!"
+      
+      # Final check
+      test -f target/release/ascii-converter || (echo "Backend not built!" && exit 1)
+      test -f frontend/dist/index.html || (echo "Frontend not built!" && exit 1)
     startCommand: ./target/release/ascii-converter
     envVars:
       - key: PORT
