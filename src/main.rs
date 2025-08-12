@@ -50,9 +50,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create application
     let app = create_app(state);
 
+    // Get port from environment variable or default to 3000
+    let port = std::env::var("PORT").unwrap_or_else(|_| "3000".to_string());
+    let addr = format!("0.0.0.0:{}", port);
+    
     // Start server
-    let listener = TcpListener::bind("0.0.0.0:3000").await?;
-    info!("🚀 ASCII Converter API server starting on http://0.0.0.0:3000");
+    let listener = TcpListener::bind(&addr).await?;
+    info!("🚀 ASCII Converter API server starting on http://{}", addr);
     
     info!("Available endpoints:");
     info!("  GET  /health                    - Health check");

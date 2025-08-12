@@ -1,0 +1,11 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 100
+restartPolicyMaxRetries = 10
+
+[env]
+PORT = { default = "3000" }
+RUST_LOG = { default = "info" }

@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: ascii-converter
+    env: rust
+    buildCommand: |
+      # Install Trunk and WASM tools
+      cargo install trunk wasm-bindgen-cli
+      rustup target add wasm32-unknown-unknown
+      
+      # Build frontend
+      cd frontend && trunk build --release --public-url /
+      cd ..
+      
+      # Build backend
+      cargo build --release
+    startCommand: ./target/release/ascii-converter
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: RUST_LOG
+        value: info
+    healthCheckPath: /health
