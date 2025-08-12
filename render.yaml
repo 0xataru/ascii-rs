@@ -3,16 +3,25 @@ services:
     name: ascii-converter
     env: rust
     buildCommand: |
-      # Install Trunk and WASM tools
-      cargo install trunk wasm-bindgen-cli
+      # Install Rust tools
       rustup target add wasm32-unknown-unknown
       
-      # Build frontend
-      cd frontend && trunk build --release --public-url /
+      # Install Trunk and wasm-bindgen-cli
+      cargo install trunk wasm-bindgen-cli
+      
+      # Build frontend first
+      cd frontend
+      trunk build --release --public-url /
       cd ..
+      
+      # Verify frontend was built
+      ls -la frontend/dist/
       
       # Build backend
       cargo build --release
+      
+      # Verify backend was built  
+      ls -la target/release/
     startCommand: ./target/release/ascii-converter
     envVars:
       - key: PORT
