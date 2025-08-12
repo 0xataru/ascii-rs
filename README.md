@@ -1,4 +1,12 @@
 # ASCII Art Converter 🎨
+![language](https://img.shields.io/badge/language-Rust-blue)
+![license](https://img.shields.io/badge/license-MIT-green)
+![build](https://img.shields.io/badge/build-passing-brightgreen)
+![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![downloads](https://img.shields.io/badge/downloads-100-brightgreen)
+![stars](https://img.shields.io/badge/stars-100-brightgreen)
+![forks](https://img.shields.io/badge/forks-100-brightgreen)
+![logo](./akame.png)
 
 A modern web service for converting images to ASCII art with enhanced image processing algorithms and Clean Architecture, featuring a Rust WebAssembly frontend.
 

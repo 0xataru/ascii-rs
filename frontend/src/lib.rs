@@ -169,15 +169,21 @@ fn app() -> Html {
     };
 
     html! {
-        <>
         <div style="
-            max-width: 1000px; 
-            margin: 0 auto; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            padding: 20px;
-            color: white;
-            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
         ">
+            <div style="
+                max-width: 1000px; 
+                margin: 0 auto; 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                padding: 20px;
+                color: white;
+                flex: 1;
+                width: 100%;
+            ">
             <div style="
                 background: rgba(255, 255, 255, 0.1);
                 backdrop-filter: blur(10px);
@@ -369,7 +375,7 @@ fn app() -> Html {
                     </div>
                 }
             </div>
-        </div>
+            </div>
         
         <footer style="
             width: 100%;
@@ -415,7 +421,7 @@ fn app() -> Html {
                 </a>
             </div>
         </footer>
-        </>
+        </div>
     }
 }
 
