@@ -1,8 +1,8 @@
+use crate::infrastructure::web::error::WebError;
 use axum::{
     async_trait,
     extract::{FromRequest, Multipart, Request},
 };
-use crate::infrastructure::web::error::WebError;
 
 /// Multipart form data for image upload
 pub struct ImageUpload {
@@ -48,9 +48,8 @@ where
             }
         }
 
-        let filename = filename.ok_or_else(|| {
-            WebError::BadRequest("Missing filename in image field".to_string())
-        })?;
+        let filename = filename
+            .ok_or_else(|| WebError::BadRequest("Missing filename in image field".to_string()))?;
 
         let content_type = content_type.ok_or_else(|| {
             WebError::BadRequest("Missing content type in image field".to_string())

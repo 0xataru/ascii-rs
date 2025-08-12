@@ -1,10 +1,7 @@
 use crate::{
-    application::{
-        use_cases::{
-            ConvertImageToAsciiUseCase, UploadImageUseCase,
-            convert_image_to_ascii::ConvertImageRequest,
-            upload_image::UploadImageRequest,
-        },
+    application::use_cases::{
+        convert_image_to_ascii::ConvertImageRequest, upload_image::UploadImageRequest,
+        ConvertImageToAsciiUseCase, UploadImageUseCase,
     },
     domain::{
         entities::ascii_art::DetailLevel,
@@ -97,7 +94,11 @@ pub async fn convert_to_ascii(
     let detail_level = match params.detail.as_deref() {
         Some("low") => DetailLevel::Low,
         Some("high") | None => DetailLevel::High,
-        _ => return Err(WebError::BadRequest("Invalid detail level. Use 'low' or 'high'".to_string())),
+        _ => {
+            return Err(WebError::BadRequest(
+                "Invalid detail level. Use 'low' or 'high'".to_string(),
+            ))
+        }
     };
 
     let width = params.width.unwrap_or(100);
@@ -107,7 +108,9 @@ pub async fn convert_to_ascii(
     let config = ConversionConfig::with_params(width, detail_level, contrast, blur);
 
     if !config.is_valid() {
-        return Err(WebError::BadRequest("Invalid conversion parameters".to_string()));
+        return Err(WebError::BadRequest(
+            "Invalid conversion parameters".to_string(),
+        ));
     }
 
     let request = ConvertImageRequest { image_id, config };

@@ -1,7 +1,4 @@
-use crate::domain::{
-    entities::ImageData,
-    value_objects::ConversionConfig,
-};
+use crate::domain::{entities::ImageData, value_objects::ConversionConfig};
 use image::{DynamicImage, GenericImageView, GrayImage, Luma, Rgb, RgbImage};
 use thiserror::Error;
 
@@ -30,10 +27,10 @@ impl AsciiConversionService {
     ) -> Result<String, ConversionError> {
         // Load image from bytes
         let img = image::load_from_memory(&image_data.data)?;
-        
+
         // Convert to ASCII using the improved algorithm
         let ascii_art = self.convert_image_to_ascii(&img, config).await;
-        
+
         Ok(ascii_art)
     }
 
@@ -51,15 +48,19 @@ impl AsciiConversionService {
         let height = (config.width as f32 * aspect_ratio * 0.43) as u32;
 
         // Use better resampling for sharper results
-        let resized = img.resize_exact(config.width, height, image::imageops::FilterType::CatmullRom);
-        
+        let resized = img.resize_exact(
+            config.width,
+            height,
+            image::imageops::FilterType::CatmullRom,
+        );
+
         // Apply contrast enhancement before converting to grayscale
         let contrast_adjusted = self.enhance_contrast(&resized, config.contrast_factor);
         let gray = contrast_adjusted.to_luma8();
 
         // Apply edge-preserving smoothing to reduce noise while maintaining details
         let smoothed = self.gaussian_blur(&gray, config.blur_sigma);
-        
+
         // Use adaptive thresholding for better character mapping
         let processed = self.adaptive_threshold(&smoothed, ascii_chars.len());
 
@@ -87,12 +88,12 @@ impl AsciiConversionService {
 
         for (x, y, pixel) in rgb_img.enumerate_pixels() {
             let Rgb([r, g, b]) = *pixel;
-            
+
             // Apply contrast enhancement to each channel
             let new_r = ((r as f32 - 128.0) * factor + 128.0).clamp(0.0, 255.0) as u8;
             let new_g = ((g as f32 - 128.0) * factor + 128.0).clamp(0.0, 255.0) as u8;
             let new_b = ((b as f32 - 128.0) * factor + 128.0).clamp(0.0, 255.0) as u8;
-            
+
             enhanced.put_pixel(x, y, Rgb([new_r, new_g, new_b]));
         }
 
@@ -110,7 +111,11 @@ impl AsciiConversionService {
 
         // Create Gaussian kernel
         let kernel_size = (6.0 * sigma).ceil() as i32;
-        let kernel_size = if kernel_size % 2 == 0 { kernel_size + 1 } else { kernel_size };
+        let kernel_size = if kernel_size % 2 == 0 {
+            kernel_size + 1
+        } else {
+            kernel_size
+        };
         let half_kernel = kernel_size / 2;
 
         let mut kernel = Vec::new();
@@ -148,7 +153,7 @@ impl AsciiConversionService {
                 } else {
                     img.get_pixel(x, y)[0]
                 };
-                
+
                 temp.put_pixel(x, y, Luma([new_value]));
             }
         }
@@ -173,7 +178,7 @@ impl AsciiConversionService {
                 } else {
                     temp.get_pixel(x, y)[0]
                 };
-                
+
                 result.put_pixel(x, y, Luma([new_value]));
             }
         }
@@ -199,7 +204,7 @@ impl AsciiConversionService {
         let total_pixels = (width * height) as f32;
         let mut cumulative = vec![0.0; 256];
         cumulative[0] = histogram[0] as f32 / total_pixels;
-        
+
         for i in 1..256 {
             cumulative[i] = cumulative[i - 1] + histogram[i] as f32 / total_pixels;
         }
@@ -209,11 +214,11 @@ impl AsciiConversionService {
             for x in 0..width {
                 let intensity = img.get_pixel(x, y)[0] as usize;
                 let equalized = (cumulative[intensity] * 255.0) as u8;
-                
+
                 // Quantize to the specified number of levels
                 let level = (equalized as f32 / 255.0 * (levels - 1) as f32).round() as usize;
                 let quantized = (level as f32 / (levels - 1) as f32 * 255.0) as u8;
-                
+
                 result.put_pixel(x, y, Luma([quantized]));
             }
         }
@@ -234,5 +239,50 @@ impl AsciiConversionService {
 impl Default for AsciiConversionService {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    // use crate::domain::entities::ascii_art::DetailLevel;
+
+    #[test]
+    fn service_creation() {
+        let _service = AsciiConversionService::new();
+        // Service should be created without issues
+    }
+
+    #[test]
+    fn map_intensity_to_char_works() {
+        let service = AsciiConversionService::new();
+
+        // Test boundary values
+        assert_eq!(service.map_intensity_to_char(0, 5), 0);
+        assert_eq!(service.map_intensity_to_char(255, 5), 4);
+
+        // Test middle value
+        let middle_char = service.map_intensity_to_char(128, 5);
+        assert!((1..=3).contains(&middle_char));
+    }
+
+    #[test]
+    fn enhance_contrast_preserves_dimensions() {
+        let service = AsciiConversionService::new();
+
+        // Create a simple test image
+        let img = DynamicImage::new_rgb8(10, 10);
+        let enhanced = service.enhance_contrast(&img, 1.2);
+
+        assert_eq!(img.dimensions(), enhanced.dimensions());
+    }
+
+    #[test]
+    fn gaussian_blur_with_zero_sigma_returns_same() {
+        let service = AsciiConversionService::new();
+        let original = GrayImage::new(5, 5);
+        let blurred = service.gaussian_blur(&original, 0.0);
+
+        assert_eq!(original.dimensions(), blurred.dimensions());
     }
 }

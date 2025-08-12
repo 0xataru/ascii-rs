@@ -26,8 +26,14 @@ impl IntoResponse for WebError {
             WebError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.clone()),
             WebError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.clone()),
             WebError::InternalServerError(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg.clone()),
-            WebError::PayloadTooLarge => (StatusCode::PAYLOAD_TOO_LARGE, "Payload too large".to_string()),
-            WebError::UnsupportedMediaType => (StatusCode::UNSUPPORTED_MEDIA_TYPE, "Unsupported media type".to_string()),
+            WebError::PayloadTooLarge => (
+                StatusCode::PAYLOAD_TOO_LARGE,
+                "Payload too large".to_string(),
+            ),
+            WebError::UnsupportedMediaType => (
+                StatusCode::UNSUPPORTED_MEDIA_TYPE,
+                "Unsupported media type".to_string(),
+            ),
         };
 
         let body = Json(json!({

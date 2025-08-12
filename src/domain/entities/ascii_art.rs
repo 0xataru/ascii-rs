@@ -25,7 +25,9 @@ impl DetailLevel {
     pub fn char_set(&self) -> &'static str {
         match self {
             DetailLevel::Low => " .-:=+*#%@",
-            DetailLevel::High => " .`'^,:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$",
+            DetailLevel::High => {
+                " .`'^,:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
+            }
         }
     }
 }

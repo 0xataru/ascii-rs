@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use crate::domain::entities::ascii_art::DetailLevel;
+use serde::{Deserialize, Serialize};
 
 /// Configuration for ASCII art conversion
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -38,7 +38,7 @@ impl ConversionConfig {
 
     /// Validate the configuration
     pub fn is_valid(&self) -> bool {
-        self.width > 0 
+        self.width > 0
             && self.width <= 1000 // reasonable upper limit
             && self.contrast_factor > 0.0
             && self.contrast_factor <= 3.0 // reasonable range

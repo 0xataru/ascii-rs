@@ -12,7 +12,7 @@ use ascii_converter::{
 use std::sync::Arc;
 use tokio::net::TcpListener;
 use tracing::{info, Level};
-use tracing_subscriber;
+
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -53,14 +53,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Get port from environment variable or default to 3000
     let port = std::env::var("PORT").unwrap_or_else(|_| "3000".to_string());
     let addr = format!("0.0.0.0:{}", port);
-    
+
     // Start server
     let listener = TcpListener::bind(&addr).await?;
     info!("🚀 ASCII Converter API server starting on http://{}", addr);
-    
+
     info!("Available endpoints:");
     info!("  GET  /health                    - Health check");
-    info!("  POST /api/upload                - Upload image (multipart/form-data with 'image' field)");
+    info!(
+        "  POST /api/upload                - Upload image (multipart/form-data with 'image' field)"
+    );
     info!("  POST /api/convert/:image_id     - Convert image to ASCII art");
     info!("    Query parameters:");
     info!("      ?width=100                  - ASCII width (default: 100)");

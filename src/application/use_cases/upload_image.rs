@@ -1,7 +1,5 @@
 use crate::domain::{
-    entities::ImageData,
-    repositories::ImageRepository,
-    value_objects::ImageFormat,
+    entities::ImageData, repositories::ImageRepository, value_objects::ImageFormat,
 };
 use image::GenericImageView;
 use std::sync::Arc;
