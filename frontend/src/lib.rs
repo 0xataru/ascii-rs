@@ -369,6 +369,32 @@ fn app() -> Html {
                     </div>
                 }
             </div>
+            
+            // Footer
+            <div style="
+                margin-top: 40px;
+                padding: 20px;
+                text-align: center;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+                font-size: 14px;
+                color: rgba(255, 255, 255, 0.8);
+            ">
+                {"Made with ❤️ and 🦀 by "}
+                <a 
+                    href="https://github.com/0xataru" 
+                    target="_blank" 
+                    style="
+                        color: #4ECDC4;
+                        text-decoration: none;
+                        font-weight: bold;
+                        transition: color 0.2s;
+                    "
+                >
+                    {"Ataru"}
+                </a>
+            </div>
         </div>
     }
 }
