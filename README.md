@@ -6,7 +6,7 @@
 ![downloads](https://img.shields.io/badge/downloads-100-brightgreen)
 ![stars](https://img.shields.io/badge/stars-100-brightgreen)
 ![forks](https://img.shields.io/badge/forks-100-brightgreen)
-![logo](./akame.png)
+![logo](./akame_nobg.png)
 
 A modern web service for converting images to ASCII art with enhanced image processing algorithms and Clean Architecture, featuring a Rust WebAssembly frontend.
 
